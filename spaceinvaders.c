@@ -7,18 +7,19 @@
 #define TAM_Y 100
 
 /*definindo os modelos de aliens*/
-#define ALIEN_1_A 'A\nAMA\n/X\\'
-#define ALIEN_1_B 'A\nAMA\n\\X/'
-#define ALIEN_2_A 'A\nAMA\n/X\\'
-#define ALIEN_2_B 'A\nAMA\n\\X/'
-#define ALIEN_3_A 'A\nAMA\n/X\\'
-#define ALIEN_3_B 'A\nAMA\n\\X/'
-#define ALIEN_EXPLOSION '\\ \' /\n-   -\n/,\\'
-#define ALIEN_SHOT '&'
-
+#define ALIEN_1_A "A\nAMA\n/X\\"
+#define ALIEN_1_B "A\nAMA\n\\X/"
+#define ALIEN_2_A ".v_v.\n}WMW{\n/ \\"
+#define ALIEN_2_B ".v_v.\n}WMW{\n\\ /"
+#define ALIEN_3_A "nmn\ndbMdb\n_/-\\_"
+#define ALIEN_3_B "nmn\ndbMdb\n_\\-/_\n"
+#define ALIEN_EXPLOSION "\\ \' /\n-   -\n/,\\"
+#define ALIEN_SHOT "&"
+/*definindo o modelo para a barreira*/
+#define BARRIER "AMMMA\nAMMMMMA\nMM   MM"
 /*definindo os modelos para o jogador*/
-#define PLAYER_SPACESHIP ''
-#define PLAYER_SHOT '|'
+#define PLAYER_SPACESHIP "/^\\\nMMMMM"
+#define PLAYER_SHOT "|"
 
 /*função para mover o jogador*/
 void player_move(int dir)
@@ -53,10 +54,6 @@ void main(void) {
     	}
 
 	    key = getch();
-	    move(19, 50);
-
-
-	    refresh();
 
 		if(key == KEY_UP || key == ' ' || key == 'w') {
 			/* atira */
