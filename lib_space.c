@@ -1,21 +1,12 @@
-#include <stdlib.h>
-#include <ncurses.h>
 #include "lib_space.h"
+/*
+	ESTADOS
 
-/*definindo os modelos de aliens*/
-#define ALIEN_1_A "  A   AMA  /X\\ "
-#define ALIEN_1_B "  A   AMA  \\X/ "
-#define ALIEN_2_A ".v_v.}WMW{ / \\ "
-#define ALIEN_2_B ".v_v.}WMW{ \\ / "
-#define ALIEN_3_A " nmn dbMdb_/-\\_"
-#define ALIEN_3_B " nmn dbMdb_\\-/_"
-#define ALIEN_EXPLOSION "\\ \' /-   -/ , \\"
-#define ALIEN_SHOT "&"
-/*definindo o modelo para a barreira*/
-#define BARRIER "AMMMA\nAMMMMMA\nMM   MM"
-/*definindo os modelos para o jogador*/
-#define PLAYER_SPACESHIP "/^\\\nMMMMM"
-#define PLAYER_SHOT "|"
+	0 = MORTO
+	1 = VIVO
+	2 = MORRENDO
+
+*/
 
 /* Inicia o ncurses */
 void inicia_ncurses(){ 
@@ -37,7 +28,48 @@ void finaliza_ncurses(){
 	endwin();
     exit(0);
 }
-void imprime_borda(void){
+int inicia_jogo(t_lista *tiros, t_lista *player, t_lista *barreira, t_lista *aliens){
+	/*Inicializando as listas*/
+	if (! inicializa_lista(tiros))
+		return 0;
+	if (! inicializa_lista(player))
+		return 0;
+	if (! inicializa_lista(barreira))
+		return 0;
+	if (! inicializa_lista(aliens))
+		return 0;
+
+	/*int pos_lin, pos_col, velocidade, estado, tam_lin, tam_col;
+	char estilo[MAX];*/
+
+	/*Inserindo player na lista*/
+	if (! insere_inicio_lista(98, 17, 1, 1, 2, 5, PLAYER_SPACESHIP, player)){
+		return 0;
+	}
+
+	/*endwin();
+	inicializa_atual_inicio(player);
+	printf("estilo: %s", player->atual->estilo);
+	exit(0);*/
+
+	imprime_jogo(tiros, player, barreira, aliens);
+
+	return 1;
+}
+void imprime_jogo(t_lista *l1, t_lista *l2, t_lista *l3, t_lista *l4){
+	clear();
+
+	/*move(50,20);
+	addch('#');*/
+	imprime_lista(l1);
+	/*imprime_lista(l2);
+	imprime_lista(l3);
+	imprime_lista(l4);*/
+	imprime_borda();
+
+	refresh();
+}
+void imprime_borda(){
 	int i;
 
 	clear();
@@ -55,28 +87,53 @@ void imprime_borda(void){
 	}
 	refresh();
 }
-void imprime_aliens(void){
-	int i, j, a, b, c;
-	char v[15] = ALIEN_1_A;
 
-	clear();
-	for (i = 6; i < TAM_X-11; i+=4)
-		for (j = 1; j < TAM_Y-6; j+=6){
-			c = 0;
-			for (a = i; a < i+3; a++)
-				for (b = j; b < j+5; b++){
-					move(a, b);
-					addch(v[c]);
-					c++;
+/*Imprime a lista*/
+void imprime_lista(t_lista *lista){
+	int pos_lin, pos_col, estado, tam_lin, tam_col, i, j, k;
+	char estilo[MAX];
+
+	inicializa_atual_inicio(lista);
+	while(consulta_item_atual(&pos_lin, &pos_col, &estado, &tam_lin, &tam_col, estilo, lista) == 1){
+		
+		k = 0;
+		if (estado == 1){
+			for(i = pos_lin; i < (pos_lin+tam_lin); i++)
+				for(j = pos_col; j < (pos_col+tam_col); j++){
+					move(i, j);
+					addch(estilo[k]);
+					k++;
+				}
+		} 
+		else if (estado == 2){
+			muda_estilo(estilo, EXPLOSION);
+			for(i = pos_lin; i < (pos_lin+5); i++)
+				for(j = pos_col; j < (pos_col+5); j++){
+					move(i, j);
+					addch(estilo[k]);
+					k++;
 				}
 		}
-	refresh();
+		incrementa_atual(lista);
+	}
+		
 }
+
+/*muda estilo*/
+void muda_estilo(char *estilo, char novo[]){
+	int i = 0;
+
+	while(novo[i] != '\0' && i < MAX){
+		estilo[i] = novo[i];
+		i++;
+	}
+}
+
 /*função para mover o jogador*/
 void player_move(int dir){
 
 }
 /*função para o jogador atirar*/
-void player_atira(void){
+void player_atira(t_lista *tiros){
 
 }
