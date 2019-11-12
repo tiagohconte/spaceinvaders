@@ -4,20 +4,20 @@
 #include "lib_space.h"
 
 int main() {
-	t_lista tiros, player, barreira, aliens;
+	t_lista tiros, canhao, barreira, aliens;
 
     int nlin, ncol;
     chtype key;
 
 	inicia_ncurses();
 	getmaxyx(stdscr, nlin, ncol);
-    	if (nlin < TAM_X || ncol < TAM_Y)	/*verifica tamanho do terminal*/
+    	if (nlin < TAM_LIN || ncol < TAM_COL)	/*verifica tamanho do terminal*/
     	{
     		endwin();
-    		printf("O terminal deve ter tamanho mínimo de %d linhas por %d colunas\n", TAM_X, TAM_Y);
+    		printf("O terminal deve ter tamanho mínimo de %d linhas por %d colunas\n", TAM_LIN, TAM_COL);
     		exit(0);
     	} 
-	if (! inicia_jogo(&tiros, &player, &barreira, &aliens)){
+	if (! inicia_jogo(&tiros, &canhao, &barreira, &aliens)){
 		endwin();
 		printf("Erro na inicialização!\n");
 		exit(0);
@@ -25,10 +25,10 @@ int main() {
 
 	while (1) {
 		getmaxyx(stdscr, nlin, ncol);
-    	if (nlin < TAM_X || ncol < TAM_Y)	/*verifica tamanho do terminal*/
+    	if (nlin < TAM_LIN || ncol < TAM_COL)	/*verifica tamanho do terminal*/
     	{
     		endwin();
-    		printf("O terminal deve ter tamanho mínimo de %d linhas por %d colunas\n", TAM_X, TAM_Y);
+    		printf("O terminal deve ter tamanho mínimo de %d linhas por %d colunas\n", TAM_LIN, TAM_COL);
     		exit(0);
     	}    	
 
@@ -36,15 +36,15 @@ int main() {
 
 		if(key == KEY_UP || key == ' ' || key == 'w') {
 			/* atira */
-        	player_atira();
+        	canhao_atira();
 	    }
 		else if(key == KEY_LEFT || key == 'a') {
 	   		/*move pra esquerda*/
-	   		player_move(1);
+	   		canhao_move(1);
 	    }
 		else if (key == KEY_RIGHT || key == 'd') {
 	    	/*move pra direita*/
-	    	player_move(2);
+	    	canhao_move(2);
 	    }
 		else if (key == 'q') {
 			/*sai do jogo*/

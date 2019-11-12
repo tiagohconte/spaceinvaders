@@ -13,12 +13,12 @@
 /*definindo o modelo para a barreira*/
 #define BARRIER "AMMMAAMMMMMAMM   MM\0"
 /*definindo os modelos para o jogador*/
-#define PLAYER_SPACESHIP " /^\\ MMMMM\0"
-#define PLAYER_SHOT "|\0"
+#define CANHAO_STYLE " /^\\ MMMMM\0"
+#define CANHAO_SHOT "|\0"
 #define EXPLOSION "\\ \' /-   -/ , \\\0"
 
-#define TAM_X 37
-#define TAM_Y 100
+#define TAM_LIN 37
+#define TAM_COL 100
 
 /* Inicia o ncurses */
 void inicia_ncurses();
@@ -27,7 +27,7 @@ void inicia_ncurses();
 void finaliza_ncurses();
 
 /*Inicializa o jogo*/
-int inicia_jogo(t_lista *tiros, t_lista *player, t_lista *barreira, t_lista *aliens);
+int inicia_jogo(t_lista *tiros, t_lista *canhao, t_lista *barreira, t_lista *aliens);
 
 /*Comanda as operações para impressão do jogo*/
 void imprime_jogo(t_lista *l1, t_lista *l2, t_lista *l3, t_lista *l4);
@@ -41,8 +41,9 @@ void imprime_lista(t_lista *lista);
 /*Muda estilo*/
 void muda_estilo(char *estilo, char novo[]);
 
-/*função para mover o jogador*/
-void player_move(int dir);
+/*função para mover o canhao*/
+/*Direção 1 para esquerda e 2 para direita*/
+void canhao_move(int direcao);
 
-/*função para o jogador atirar*/
-void player_atira();
+/*função para o canhao atirar*/
+void canhao_atira();

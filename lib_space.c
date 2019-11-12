@@ -28,11 +28,11 @@ void finaliza_ncurses(){
 	endwin();
     exit(0);
 }
-int inicia_jogo(t_lista *tiros, t_lista *player, t_lista *barreira, t_lista *aliens){
+int inicia_jogo(t_lista *tiros, t_lista *canhao, t_lista *barreira, t_lista *aliens){
 	/*Inicializando as listas*/
 	if (! inicializa_lista(tiros))
 		return 0;
-	if (! inicializa_lista(player))
+	if (! inicializa_lista(canhao))
 		return 0;
 	if (! inicializa_lista(barreira))
 		return 0;
@@ -42,69 +42,88 @@ int inicia_jogo(t_lista *tiros, t_lista *player, t_lista *barreira, t_lista *ali
 	/*int pos_lin, pos_col, velocidade, estado, tam_lin, tam_col;
 	char estilo[MAX];*/
 
-	/*Inserindo player na lista*/
-	if (! insere_inicio_lista(98, 17, 1, 1, 2, 5, PLAYER_SPACESHIP, player)){
+	/*Inserindo canhao na lista*/
+	if (! insere_inicio_lista(98, 17, 1, 1, 2, 5, CANHAO_STYLE, canhao)){
 		return 0;
 	}
-
 	/*endwin();
-	inicializa_atual_inicio(player);
-	printf("estilo: %s", player->atual->estilo);
+	inicializa_atual_inicio(canhao);
+	printf("estilo: %s", canhao->atual->estilo);
 	exit(0);*/
 
-	imprime_jogo(tiros, player, barreira, aliens);
+	/*Inserindo aliens na lista*/
+	/*int i;*/
+	/*Primeiro modelo de alien*/
+	/*for(i = 0; i < 7; i++)*/
+		if (! insere_inicio_lista(50, 17, 1, 1, 3, 5, ALIEN_1_A, aliens)){
+			return 0;
+		}
+
+	imprime_jogo(tiros, canhao, barreira, aliens);
 
 	return 1;
 }
 void imprime_jogo(t_lista *l1, t_lista *l2, t_lista *l3, t_lista *l4){
 	clear();
 
-	/*move(50,20);
-	addch('#');*/
 	imprime_lista(l1);
-	/*imprime_lista(l2);
+	imprime_lista(l2);
 	imprime_lista(l3);
-	imprime_lista(l4);*/
+	imprime_lista(l4);
+
 	imprime_borda();
+
+	move(10,10);
+	addch('#');	
 
 	refresh();
 }
 void imprime_borda(){
 	int i;
 
-	clear();
-	for (i = 1; i < TAM_X-1; i++){
+	for (i = 1; i < TAM_LIN-1; i++){
 		move(i, 0);
 		addch('|');
-		move(i, TAM_Y-1);
+		move(i, TAM_COL-1);
 		addch('|');
 	}
-	for (i = 0; i < TAM_Y; i++){
+	for (i = 0; i < TAM_COL; i++){
 		move(0, i);
 		addch('-');
-		move(TAM_X-1, i);
+		move(TAM_LIN-1, i);
 		addch('-');
 	}
-	refresh();
 }
 
 /*Imprime a lista*/
 void imprime_lista(t_lista *lista){
+	if (lista_vazia(lista))
+		return;
+
 	int pos_lin, pos_col, estado, tam_lin, tam_col, i, j, k;
 	char estilo[MAX];
 
-	inicializa_atual_inicio(lista);
-	while(consulta_item_atual(&pos_lin, &pos_col, &estado, &tam_lin, &tam_col, estilo, lista) == 1){
-		
+	inicializa_atual_inicio(lista);	
+	while(consulta_item_atual(&pos_lin, &pos_col, &estado, &tam_lin, &tam_col, estilo, lista) == 1){	
 		k = 0;
+		/*endwin();
+		printf("pos_lin: %d\n", pos_lin);
+		printf("pos_col: %d\n", pos_col);
+		printf("tam_lin: %d\n", tam_lin);
+		printf("tam_col: %d\n", tam_col);
+		printf("estado: %d\n", estado);
+		exit(0);*/
+		/*move(50, 17);
+		addch('O');*/
 		if (estado == 1){
-			for(i = pos_lin; i < (pos_lin+tam_lin); i++)
+			for(i = pos_lin; i < (pos_lin+tam_lin); i++){
 				for(j = pos_col; j < (pos_col+tam_col); j++){
 					move(i, j);
 					addch(estilo[k]);
 					k++;
 				}
-		} 
+			}
+		}
 		else if (estado == 2){
 			muda_estilo(estilo, EXPLOSION);
 			for(i = pos_lin; i < (pos_lin+5); i++)
@@ -129,11 +148,12 @@ void muda_estilo(char *estilo, char novo[]){
 	}
 }
 
-/*função para mover o jogador*/
-void player_move(int dir){
+/*função para mover o canhao*/
+/*Direção 1 para esquerda e 2 para direita*/
+void canhao_move(int direcao){
 
 }
-/*função para o jogador atirar*/
-void player_atira(t_lista *tiros){
+/*função para o canhao atirar*/
+void canhao_atira(t_lista *tiros){
 
 }

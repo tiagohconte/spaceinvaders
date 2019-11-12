@@ -5,6 +5,8 @@
 */
 
 #include <stdlib.h>
+#include <stdio.h>
+#include <ncurses.h>
 #define MAX 25
 
 struct t_nodo {
@@ -111,7 +113,7 @@ void decrementa_atual(t_lista *l);
   Retorna em *item o valor contido na chave apontada pelo ponteiro atual. 
   Se atual não for válido a função retorna zero senão retorna 1.
 */
-int consulta_item_atual(int *pos_lin, int *pos_col, int *estado, int *tam_lin, int *tam_col, char *estilo, t_lista *l);
+int consulta_item_atual(int *pos_lin, int *pos_col, int *estado, int *tam_lin, int *tam_col, char estilo[], t_lista *l);
 
 /*
   Remove o elemento apontado por atual da lista l e o retorna em *item.
