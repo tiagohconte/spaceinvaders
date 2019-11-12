@@ -1,4 +1,6 @@
 #include "lib_space.h"
+#include <stdio.h>
+#include <ncurses.h>
 /*
 	ESTADOS
 
@@ -43,7 +45,7 @@ int inicia_jogo(t_lista *tiros, t_lista *canhao, t_lista *barreira, t_lista *ali
 	char estilo[MAX];*/
 
 	/*Inserindo canhao na lista*/
-	if (! insere_inicio_lista(98, 17, 1, 1, 2, 5, CANHAO_STYLE, canhao)){
+	if (! insere_inicio_lista(34, 47, 1, 1, 2, 5, CANHAO_STYLE, canhao)){
 		return 0;
 	}
 	/*endwin();
@@ -52,14 +54,45 @@ int inicia_jogo(t_lista *tiros, t_lista *canhao, t_lista *barreira, t_lista *ali
 	exit(0);*/
 
 	/*Inserindo aliens na lista*/
-	/*int i;*/
-	/*Primeiro modelo de alien*/
-	/*for(i = 0; i < 7; i++)*/
-		if (! insere_inicio_lista(50, 17, 1, 1, 3, 5, ALIEN_1_A, aliens)){
+	int i;
+	int pos_col, pos_lin;
+	pos_lin = 5;
+	/*Primeiro estilo de aliens*/
+	pos_col = 1;
+	for(i = 0; i < 11; i++){
+		if (! insere_inicio_lista(pos_lin, pos_col, 1, 1, 3, 5, ALIEN_1_A, aliens))
 			return 0;
+		pos_col+=7;
+	}
+	pos_lin+=4;
+	/*Segundo estilo de aliens*/
+	while(pos_lin < 17){
+		pos_col = 1;
+		for(i = 0; i < 11; i++){
+			if (! insere_inicio_lista(pos_lin, pos_col, 1, 1, 3, 5, ALIEN_2_A, aliens))
+				return 0;
+			pos_col+=7;
 		}
-
-	imprime_jogo(tiros, canhao, barreira, aliens);
+		pos_lin+=4;
+	}
+	/*Terceiro estilo de aliens*/
+	while(pos_lin < 25){
+		pos_col = 1;
+		for(i = 0; i < 11; i++){
+			if (! insere_inicio_lista(pos_lin, pos_col, 1, 1, 3, 5, ALIEN_3_A, aliens))
+				return 0;
+			pos_col+=7;
+		}
+		pos_lin+=4;
+	}
+	/*Inserindo barreiras*/
+	pos_col = 15;
+	pos_lin = 28;
+	for(i = 0; i < 4; i++){
+		if (! insere_inicio_lista(pos_lin, pos_col, 1, 1, 3, 7, BARRIER, barreira))
+			return 0;
+		pos_col+=21;
+	}
 
 	return 1;
 }
@@ -72,9 +105,6 @@ void imprime_jogo(t_lista *l1, t_lista *l2, t_lista *l3, t_lista *l4){
 	imprime_lista(l4);
 
 	imprime_borda();
-
-	move(10,10);
-	addch('#');	
 
 	refresh();
 }
@@ -106,36 +136,26 @@ void imprime_lista(t_lista *lista){
 	inicializa_atual_inicio(lista);	
 	while(consulta_item_atual(&pos_lin, &pos_col, &estado, &tam_lin, &tam_col, estilo, lista) == 1){	
 		k = 0;
-		/*endwin();
-		printf("pos_lin: %d\n", pos_lin);
-		printf("pos_col: %d\n", pos_col);
-		printf("tam_lin: %d\n", tam_lin);
-		printf("tam_col: %d\n", tam_col);
-		printf("estado: %d\n", estado);
-		exit(0);*/
-		/*move(50, 17);
-		addch('O');*/
 		if (estado == 1){
-			for(i = pos_lin; i < (pos_lin+tam_lin); i++){
-				for(j = pos_col; j < (pos_col+tam_col); j++){
-					move(i, j);
+			for(i = 0; i < tam_lin; i++)
+				for(j = 0; j < tam_col; j++){
+					move((pos_lin + i), (pos_col + j));
 					addch(estilo[k]);
 					k++;
 				}
-			}
 		}
 		else if (estado == 2){
 			muda_estilo(estilo, EXPLOSION);
-			for(i = pos_lin; i < (pos_lin+5); i++)
-				for(j = pos_col; j < (pos_col+5); j++){
-					move(i, j);
+			for(i = 0; i < tam_lin; i++)
+				for(j = 0; j < tam_col; j++){
+					move((pos_lin + i), (pos_col + j));
 					addch(estilo[k]);
 					k++;
 				}
 		}
 		incrementa_atual(lista);
 	}
-		
+
 }
 
 /*muda estilo*/
@@ -150,8 +170,25 @@ void muda_estilo(char *estilo, char novo[]){
 
 /*função para mover o canhao*/
 /*Direção 1 para esquerda e 2 para direita*/
-void canhao_move(int direcao){
+void move_elemento(t_lista *l, int direcao){
+	if (lista_vazia(l))
+		return;
 
+	t_nodo *p;
+
+	p = l->ini->prox;
+
+	while(p != NULL){
+		if (direcao == 1)
+			if (p->pos_col > 1)
+				p->pos_col--;
+		
+		if (direcao == 2)
+			if ((p->pos_col + p->tam_col) < 99)
+				p->pos_col++;
+
+		p = p->prox;
+	}
 }
 /*função para o canhao atirar*/
 void canhao_atira(t_lista *tiros){

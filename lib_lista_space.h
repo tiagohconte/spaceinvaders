@@ -5,8 +5,6 @@
 */
 
 #include <stdlib.h>
-#include <stdio.h>
-#include <ncurses.h>
 #define MAX 25
 
 struct t_nodo {

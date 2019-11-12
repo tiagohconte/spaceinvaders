@@ -23,14 +23,16 @@ int main() {
 		exit(0);
 	}
 
-	while (1) {
+	while (1) { 
 		getmaxyx(stdscr, nlin, ncol);
     	if (nlin < TAM_LIN || ncol < TAM_COL)	/*verifica tamanho do terminal*/
     	{
     		endwin();
     		printf("O terminal deve ter tamanho mínimo de %d linhas por %d colunas\n", TAM_LIN, TAM_COL);
     		exit(0);
-    	}    	
+    	} 
+
+    	imprime_jogo(&tiros, &canhao, &barreira, &aliens);
 
 	    key = getch();
 
@@ -40,11 +42,11 @@ int main() {
 	    }
 		else if(key == KEY_LEFT || key == 'a') {
 	   		/*move pra esquerda*/
-	   		canhao_move(1);
+	   		move_elemento(&canhao, 1);
 	    }
 		else if (key == KEY_RIGHT || key == 'd') {
 	    	/*move pra direita*/
-	    	canhao_move(2);
+	    	move_elemento(&canhao, 2);
 	    }
 		else if (key == 'q') {
 			/*sai do jogo*/

@@ -11,7 +11,7 @@
 #define ALIEN_3_B " nmn dbMdb_\\-/_\0"
 #define ALIEN_SHOT "&\0"
 /*definindo o modelo para a barreira*/
-#define BARRIER "AMMMAAMMMMMAMM   MM\0"
+#define BARRIER " AMMMA AMMMMMAMM   MM\0"
 /*definindo os modelos para o jogador*/
 #define CANHAO_STYLE " /^\\ MMMMM\0"
 #define CANHAO_SHOT "|\0"
@@ -43,7 +43,7 @@ void muda_estilo(char *estilo, char novo[]);
 
 /*função para mover o canhao*/
 /*Direção 1 para esquerda e 2 para direita*/
-void canhao_move(int direcao);
+void move_elemento(t_lista *l, int direcao);
 
 /*função para o canhao atirar*/
 void canhao_atira();
