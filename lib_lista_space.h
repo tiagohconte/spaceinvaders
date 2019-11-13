@@ -10,7 +10,6 @@
 struct t_nodo {
     int pos_lin;
     int pos_col;
-    int velocidade;
     int estado;
     int tam_lin;
     int tam_col;
@@ -54,13 +53,13 @@ int tamanho_lista(int *tam, t_lista *l);
   Insere o elemento item no início da lista.
   Retorna 1 se a operação foi bem sucedida e zero caso contrário.
 */
-int insere_inicio_lista(int pos_lin, int pos_col, int velocidade, int estado, int tam_lin, int tam_col, char estilo[], t_lista *l);
+int insere_inicio_lista(int pos_lin, int pos_col, int estado, int tam_lin, int tam_col, char estilo[], t_lista *l);
 
 /*
   Insere o elemento item no final da lista.
   Retorna 1 se a operação foi bem sucedida e zero caso contrário.
 */
-int insere_fim_lista(int pos_lin, int pos_col, int velocidade, int estado, int tam_lin, int tam_col, char estilo[], t_lista *l);
+int insere_fim_lista(int pos_lin, int pos_col, int estado, int tam_lin, int tam_col, char estilo[], t_lista *l);
 
 /*
   Remove o primeiro elemento da lista e retorna localização em local.

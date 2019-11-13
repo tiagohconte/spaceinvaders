@@ -54,7 +54,7 @@ int tamanho_lista(int *tam, t_lista *l){
 }
 /* Insere o elemento item no início da lista.
   Retorna 1 se a operação foi bem sucedida e zero caso contrário. */
-int insere_inicio_lista(int pos_lin, int pos_col, int velocidade, int estado, int tam_lin, int tam_col, char *estilo, t_lista *l){
+int insere_inicio_lista(int pos_lin, int pos_col, int estado, int tam_lin, int tam_col, char *estilo, t_lista *l){
 	t_nodo *new;
 	int i = 0;
 
@@ -64,7 +64,6 @@ int insere_inicio_lista(int pos_lin, int pos_col, int velocidade, int estado, in
 
 	new->pos_lin = pos_lin;
 	new->pos_col = pos_col;
-	new->velocidade = velocidade;
 	new->estado = estado;
 	new->tam_lin = tam_lin;
 	new->tam_col = tam_col;	
@@ -85,7 +84,7 @@ int insere_inicio_lista(int pos_lin, int pos_col, int velocidade, int estado, in
 }
 /* Insere o elemento item no final da lista.
   Retorna 1 se a operação foi bem sucedida e zero caso contrário. */
-int insere_fim_lista(int pos_lin, int pos_col, int velocidade, int estado, int tam_lin, int tam_col, char *estilo, t_lista *l){
+int insere_fim_lista(int pos_lin, int pos_col, int estado, int tam_lin, int tam_col, char *estilo, t_lista *l){
 	t_nodo *new;
 	int i = 0;
 
@@ -95,7 +94,6 @@ int insere_fim_lista(int pos_lin, int pos_col, int velocidade, int estado, int t
 
 	new->pos_lin = pos_lin;
 	new->pos_col = pos_col;
-	new->velocidade = velocidade;
 	new->estado = estado;
 	new->tam_lin = tam_lin;
 	new->tam_col = tam_col;

@@ -29,6 +29,9 @@ void finaliza_ncurses();
 /*Inicializa o jogo*/
 int inicia_jogo(t_lista *tiros, t_lista *canhao, t_lista *barreira, t_lista *aliens);
 
+/*Realiza as operações após o início do jogo*/
+int opera_jogo(t_lista *tiros, t_lista *canhao, t_lista *barreira, t_lista *aliens, int move_aliens, int *direcao);
+
 /*Comanda as operações para impressão do jogo*/
 void imprime_jogo(t_lista *l1, t_lista *l2, t_lista *l3, t_lista *l4);
 
@@ -43,7 +46,8 @@ void muda_estilo(char *estilo, char novo[]);
 
 /*função para mover o canhao*/
 /*Direção 1 para esquerda e 2 para direita*/
-void move_elemento(t_lista *l, int direcao);
+/*Retorna 1 se bateu*/
+int move_elemento(t_lista *l, int direcao);
 
 /*função para o canhao atirar*/
-void canhao_atira();
+void canhao_atira(t_lista *tiros, t_lista *canhao);
