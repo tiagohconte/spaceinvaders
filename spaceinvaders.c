@@ -6,7 +6,7 @@
 int main() {
 	t_lista tiros, canhao, barreira, aliens;
 
-    int nlin, ncol, cont, vel_alien, move_aliens, direcao;
+    int nlin, ncol, cont_alien, vel_alien, dir_alien, cont_tiros;
     chtype key;
 
 	inicia_ncurses();
@@ -23,10 +23,10 @@ int main() {
 		exit(0);
 	}
 
-	cont = 0;
-	move_aliens = 0;
-	direcao = 2;
+	cont_alien = 0;
+	dir_alien = 2;
 	vel_alien = 6;
+	cont_tiros = 0;
 
 	while (1) { 
 		getmaxyx(stdscr, nlin, ncol);
@@ -60,18 +60,21 @@ int main() {
 	   		finaliza_ncurses();
 	    }
 
-	    if(cont == vel_alien){
-	    	move_aliens = 1;
-	    	cont = 0;
+	    if(cont_alien == vel_alien){
+	    	move_aliens(&aliens, &dir_alien);
+	    	cont_alien = 0;
 	    }
 
-	    opera_jogo(&tiros, &canhao, &barreira, &aliens, move_aliens, &direcao);
+	    verifica_colisao(&tiros, &canhao, &barreira, &aliens);
+	    if(cont_tiros == 1){
+	    	move_tiros(&tiros);
+	    	cont_tiros = 0;
+		}
 
-	    move_aliens = 0;
+	    cont_alien++;
+	    cont_tiros++;
 
-	    cont++;
-
-	    usleep(40000);
+	    usleep(30000);
     }
 
    finaliza_ncurses();

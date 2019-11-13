@@ -29,8 +29,14 @@ void finaliza_ncurses();
 /*Inicializa o jogo*/
 int inicia_jogo(t_lista *tiros, t_lista *canhao, t_lista *barreira, t_lista *aliens);
 
-/*Realiza as operações após o início do jogo*/
-int opera_jogo(t_lista *tiros, t_lista *canhao, t_lista *barreira, t_lista *aliens, int move_aliens, int *direcao);
+/*verifica colisão de elementos*/
+void verifica_colisao(t_lista *tiros, t_lista *canhao, t_lista *barreira, t_lista *aliens);
+
+/*movimenta os tiros*/
+void move_tiros(t_lista *tiros);
+
+/*movimenta os aliens*/
+void move_aliens(t_lista *aliens, int *direcao);
 
 /*Comanda as operações para impressão do jogo*/
 void imprime_jogo(t_lista *l1, t_lista *l2, t_lista *l3, t_lista *l4);
