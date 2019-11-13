@@ -218,11 +218,11 @@ int remove_item_atual(int *pos_lin, int *pos_col, t_lista *l){
 	t_nodo *temp;
 
 	*pos_lin = l->atual->pos_lin;
-	*pos_col = l->atual->pos_col;
+	*pos_col = l->atual->pos_col;	
 
 	temp = l->atual->prox;
-	l->atual->prev->prox = l->atual->prox;
 	l->atual->prox->prev = l->atual->prev;
+	l->atual->prev->prox = l->atual->prox;
 	free(l->atual);
 	l->atual = temp;
 	l->tamanho--;

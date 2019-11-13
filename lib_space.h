@@ -4,11 +4,11 @@
 
 /*definindo os modelos de aliens*/
 #define ALIEN_1_A "  A   AMA  /X\\ \0"
-#define ALIEN_1_B "  A   AMA  \\X/ \0"
+#define ALIEN_1_B "  A   AMA  { }  \0"
 #define ALIEN_2_A ".v_v.}WMW{ / \\ \0"
-#define ALIEN_2_B ".v_v.}WMW{ \\ / \0"
+#define ALIEN_2_B " v_v }WMW{'( )'\0"
 #define ALIEN_3_A " nmn dbMdb_/-\\_\0"
-#define ALIEN_3_B " nmn dbMdb_\\-/_\0"
+#define ALIEN_3_B " nmn dbMdb <^> \0"
 #define ALIEN_SHOT "&\0"
 /*definindo o modelo para a barreira*/
 #define BARRIER " AMMMA AMMMMMAMM   MM\0"
@@ -36,7 +36,7 @@ void verifica_colisao(t_lista *tiros, t_lista *canhao, t_lista *barreira, t_list
 void move_tiros(t_lista *tiros);
 
 /*movimenta os aliens*/
-void move_aliens(t_lista *aliens, int *direcao);
+void move_aliens(t_lista *aliens, int *direcao, int *vel_alien);
 
 /*Comanda as operações para impressão do jogo*/
 void imprime_jogo(t_lista *l1, t_lista *l2, t_lista *l3, t_lista *l4);

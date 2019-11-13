@@ -25,7 +25,7 @@ int main() {
 
 	cont_alien = 0;
 	dir_alien = 2;
-	vel_alien = 6;
+	vel_alien = 8;
 	cont_tiros = 0;
 
 	while (1) { 
@@ -61,12 +61,12 @@ int main() {
 	    }
 
 	    if(cont_alien == vel_alien){
-	    	move_aliens(&aliens, &dir_alien);
+	    	move_aliens(&aliens, &dir_alien, &vel_alien);
 	    	cont_alien = 0;
 	    }
 
 	    verifica_colisao(&tiros, &canhao, &barreira, &aliens);
-	    if(cont_tiros == 1){
+	    if(cont_tiros == 2){
 	    	move_tiros(&tiros);
 	    	cont_tiros = 0;
 		}
@@ -74,7 +74,7 @@ int main() {
 	    cont_alien++;
 	    cont_tiros++;
 
-	    usleep(30000);
+	    usleep(35000);
     }
 
    finaliza_ncurses();

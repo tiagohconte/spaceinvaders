@@ -1,5 +1,6 @@
 #include "lib_space.h"
 #include <stdio.h>
+#include <string.h>
 #include <ncurses.h>
 /*
 	ESTADOS
@@ -200,13 +201,30 @@ void move_tiros(t_lista *tiros){
 	}
 }
 /*movimenta os aliens*/
-void move_aliens(t_lista *aliens, int *direcao){
-	int prox_dir;
+void move_aliens(t_lista *aliens, int *direcao, int *vel_alien){
+	int prox_dir, down = 4, temp;
 	prox_dir = *direcao;
 	if(! lista_vazia(aliens)){
 		inicializa_atual_inicio(aliens);
 		while(aliens->atual != NULL){
-			if (move_elemento(aliens, *direcao)){
+
+			if(strcmp(aliens->atual->estilo, ALIEN_1_A) == 0)
+				muda_estilo(aliens->atual->estilo, ALIEN_1_B);
+			else if(strcmp(aliens->atual->estilo, ALIEN_1_B) == 0)
+				muda_estilo(aliens->atual->estilo, ALIEN_1_A);
+
+			else if(strcmp(aliens->atual->estilo, ALIEN_2_A) == 0)
+				muda_estilo(aliens->atual->estilo, ALIEN_2_B);
+			else if(strcmp(aliens->atual->estilo, ALIEN_2_B) == 0)
+				muda_estilo(aliens->atual->estilo, ALIEN_2_A);
+
+			else if(strcmp(aliens->atual->estilo, ALIEN_3_A) == 0)
+				muda_estilo(aliens->atual->estilo, ALIEN_3_B);
+			else if(strcmp(aliens->atual->estilo, ALIEN_3_B) == 0)
+				muda_estilo(aliens->atual->estilo, ALIEN_3_A);
+
+
+			if(move_elemento(aliens, *direcao)){
 				if(*direcao == 1){
 					prox_dir = 2;
 				} else if (*direcao == 2){
@@ -215,7 +233,11 @@ void move_aliens(t_lista *aliens, int *direcao){
 			}
 			incrementa_atual(aliens);
 		}
-		*direcao = prox_dir;
+		if(*direcao != prox_dir){
+			move_aliens(aliens, &down, &temp);
+			*direcao = prox_dir;
+			*vel_alien--;
+		}					
 	}
 }
 /*muda estilo*/
@@ -226,6 +248,7 @@ void muda_estilo(char *estilo, char novo[]){
 		estilo[i] = novo[i];
 		i++;
 	}
+	estilo[i] = novo[i];
 }
 
 /*função para mover o canhao*/
