@@ -1,3 +1,9 @@
+/*
+  Biblioteca para a implementação do jogo Space Invaders
+  Feita por Tiago Conte
+  10 de novembro de 2019
+*/
+
 #include <stdio.h>
 #include <ncurses.h>
 #include "lib_lista_space.h"

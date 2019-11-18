@@ -66,7 +66,7 @@ int main() {
 	    }
 
 	    verifica_colisao(&tiros, &canhao, &barreira, &aliens);
-	    if(cont_tiros == 2){
+	    if(cont_tiros == 1){
 	    	move_tiros(&tiros);
 	    	cont_tiros = 0;
 		}

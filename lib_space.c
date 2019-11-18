@@ -236,7 +236,7 @@ void move_aliens(t_lista *aliens, int *direcao, int *vel_alien){
 		if(*direcao != prox_dir){
 			move_aliens(aliens, &down, &temp);
 			*direcao = prox_dir;
-			*vel_alien--;
+			(*vel_alien)--;
 		}					
 	}
 }
