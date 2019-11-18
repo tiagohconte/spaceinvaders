@@ -9,15 +9,16 @@
 #include "lib_lista_space.h"
 
 /*definindo os modelos de aliens*/
-#define ALIEN_1_A "  A   AMA  /X\\ \0"
-#define ALIEN_1_B "  A   AMA  { }  \0"
+#define ALIEN_1_A " A AMA/X\\\0"
+#define ALIEN_1_B " A AMA{ }\0"
 #define ALIEN_2_A ".v_v.}WMW{ / \\ \0"
 #define ALIEN_2_B " v_v }WMW{'( )'\0"
 #define ALIEN_3_A " nmn dbMdb_/-\\_\0"
 #define ALIEN_3_B " nmn dbMdb <^> \0"
 #define ALIEN_SHOT "&\0"
 /*definindo o modelo para a barreira*/
-#define BARRIER " AMMMA AMMMMMAMM   MM\0"
+#define BARRIER_A "A\0"
+#define BARRIER_M "M\0"
 /*definindo os modelos para o jogador*/
 #define CANHAO_STYLE " /^\\ MMMMM\0"
 #define CANHAO_SHOT "|\0"
@@ -33,10 +34,10 @@ void inicia_ncurses();
 void finaliza_ncurses();
 
 /*Inicializa o jogo*/
-int inicia_jogo(t_lista *tiros, t_lista *canhao, t_lista *barreira, t_lista *aliens);
+int inicia_jogo(t_lista *tiros, t_lista *canhao, t_lista *barreiras, t_lista *aliens);
 
 /*verifica colisão de elementos*/
-void verifica_colisao(t_lista *tiros, t_lista *canhao, t_lista *barreira, t_lista *aliens);
+void verifica_colisao(t_lista *tiros, t_lista *canhao, t_lista *barreiras, t_lista *aliens);
 
 /*movimenta os tiros*/
 void move_tiros(t_lista *tiros);

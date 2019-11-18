@@ -4,7 +4,7 @@
 #include "lib_space.h"
 
 int main() {
-	t_lista tiros, canhao, barreira, aliens;
+	t_lista tiros, canhao, barreiras, aliens;
 
     int nlin, ncol, cont_alien, vel_alien, dir_alien, cont_tiros;
     chtype key;
@@ -17,7 +17,7 @@ int main() {
     		printf("O terminal deve ter tamanho mínimo de %d linhas por %d colunas\n", TAM_LIN, TAM_COL);
     		exit(0);
     	} 
-	if (! inicia_jogo(&tiros, &canhao, &barreira, &aliens)){
+	if (! inicia_jogo(&tiros, &canhao, &barreiras, &aliens)){
 		endwin();
 		printf("Erro na inicialização!\n");
 		exit(0);
@@ -37,7 +37,7 @@ int main() {
     		exit(0);
     	} 
 
-    	imprime_jogo(&tiros, &canhao, &barreira, &aliens);
+    	imprime_jogo(&tiros, &canhao, &barreiras, &aliens);
 
 	    key = getch();
 
@@ -65,7 +65,7 @@ int main() {
 	    	cont_alien = 0;
 	    }
 
-	    verifica_colisao(&tiros, &canhao, &barreira, &aliens);
+	    verifica_colisao(&tiros, &canhao, &barreiras, &aliens);
 	    if(cont_tiros == 1){
 	    	move_tiros(&tiros);
 	    	cont_tiros = 0;
