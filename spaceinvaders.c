@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <unistd.h>
+/*#include <unistd.h>*/
 
 #include "lib_space.h"
 
@@ -23,9 +23,9 @@ int main() {
 		exit(0);
 	}
 
-	cont_alien = 0;
-	dir_alien = 2;
-	vel_alien = 8;
+	cont_alien = 0;			/*Contador de ciclos para controlar a velocidade do alien*/
+	dir_alien = 2;			/*Seta a direção inicial do alien*/
+	vel_alien = 12;			/*Seta a velocidade inicial do alien*/
 	cont_tiros = 0;
 
 	while (1) { 
@@ -57,13 +57,12 @@ int main() {
 	    }
 		else if (key == 'q') {
 			/*sai do jogo*/
-	   		finaliza_ncurses();
+	   		finaliza_jogo(&tiros, &canhao, &barreiras, &aliens);
 	    }
-
-	    if(cont_alien == vel_alien){
-	    	move_aliens(&aliens, &dir_alien, &vel_alien);
-	    	cont_alien = 0;
-	    }
+	    else if (key == 'p') {
+			/*pausa o jogo*/
+	   		sleep(10);
+	    }	    
 
 	    verifica_colisao(&tiros, &canhao, &barreiras, &aliens);
 	    if(cont_tiros == 1){
@@ -71,11 +70,16 @@ int main() {
 	    	cont_tiros = 0;
 		}
 
+		if(cont_alien == vel_alien){
+	    	move_aliens(&aliens, &dir_alien, &vel_alien);
+	    	cont_alien = 0;
+	    }
+
 	    cont_alien++;
 	    cont_tiros++;
 
 	    usleep(35000);
     }
 
-   finaliza_ncurses();
+   finaliza_jogo(&tiros, &canhao, &barreiras, &aliens);
 }

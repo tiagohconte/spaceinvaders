@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <ncurses.h>
+#include <unistd.h>
 #include "lib_lista_space.h"
 
 /*definindo os modelos de aliens*/
@@ -30,11 +31,11 @@
 /* Inicia o ncurses */
 void inicia_ncurses();
 
-/* Fecha o ncurses */
-void finaliza_ncurses();
-
 /*Inicializa o jogo*/
 int inicia_jogo(t_lista *tiros, t_lista *canhao, t_lista *barreiras, t_lista *aliens);
+
+/* Finaliza o jogo */
+void finaliza_jogo(t_lista *tiros, t_lista *canhao, t_lista *barreira, t_lista *aliens);
 
 /*verifica colisão de elementos*/
 void verifica_colisao(t_lista *tiros, t_lista *canhao, t_lista *barreiras, t_lista *aliens);
@@ -46,7 +47,7 @@ void move_tiros(t_lista *tiros);
 void move_aliens(t_lista *aliens, int *direcao, int *vel_alien);
 
 /*Comanda as operações para impressão do jogo*/
-void imprime_jogo(t_lista *l1, t_lista *l2, t_lista *l3, t_lista *l4);
+void imprime_jogo(t_lista *tiros, t_lista *canhao, t_lista *barreiras, t_lista *aliens);
 
 /*imprime a borda do jogo*/
 void imprime_borda();

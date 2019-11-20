@@ -65,20 +65,13 @@ int insere_fim_lista(int pos_lin, int pos_col, int estado, int tam_lin, int tam_
   Remove o primeiro elemento da lista e retorna localização em local.
   Retorna 1 se a operação foi bem sucedida e zero caso contrário.
 */
-int remove_inicio_lista(int *pos_lin, int *pos_col, t_lista *l);
+int remove_inicio_lista(t_lista *l);
 
 /*
   Remove o último elemento da lista e o retorna em *item.
   Retorna 1 se a operação foi bem sucedida e zero caso contrário.
 */
-int remove_fim_lista(int *pos_lin, int *pos_col, t_lista *l);
-
-/*
-  Se o elemento chave existir na lista, o retorna em *item.
-  Retorna 1 se a operação foi bem sucedida e zero caso contrário
-  (elemento não encontrado também retorna zero).
-*/
-int remove_item_lista(int *pos_lin, int *pos_col, t_lista *l);
+int remove_fim_lista(t_lista *l);
 
 /* 
   Inicializa o ponteiro atual para o primeiro elemento da lista.
@@ -117,4 +110,4 @@ int consulta_item_atual(int *pos_lin, int *pos_col, int *estado, int *tam_lin, i
   Faz o atual apontar para o sucessor do nodo removido.
   Retorna 1 se houve sucesso e zero caso contrário.
 */
-int remove_item_atual(int *pos_lin, int *pos_col, t_lista *l);
+int remove_item_atual(t_lista *l);

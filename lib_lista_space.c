@@ -29,11 +29,11 @@ int lista_vazia(t_lista *l){
 }
 /* Remove todos os elementos da lista e faz com que ela aponte para NULL. */
 void destroi_lista(t_lista *l){
-	int pos_lin, pos_col;
+	if(!inicializa_atual_inicio(l))
+		return;
 
-	inicializa_atual_inicio(l);
 	while (! lista_vazia(l)){
-		remove_item_atual(&pos_lin, &pos_col, l);
+		remove_item_atual(l);
 	}
 
 	free(l->ini);
@@ -114,42 +114,24 @@ int insere_fim_lista(int pos_lin, int pos_col, int estado, int tam_lin, int tam_
 }
 /* Remove o primeiro elemento da lista e o retorna em *item.
   Retorna 1 se a operação foi bem sucedida e zero caso contrário. */
-int remove_inicio_lista(int *pos_lin, int *pos_col, t_lista *l){
+int remove_inicio_lista(t_lista *l){
 	if (lista_vazia(l))
 		return 0;
 
 	inicializa_atual_inicio(l);
 
-	return remove_item_atual(pos_lin, pos_col, l);
+	return remove_item_atual(l);
 }
 /*
   Remove o último elemento da lista e o retorna em *item.
   Retorna 1 se a operação foi bem sucedida e zero caso contrário. */
-int remove_fim_lista(int *pos_lin, int *pos_col, t_lista *l){
+int remove_fim_lista(t_lista *l){
 	if (lista_vazia(l))
 		return 0;
 
 	inicializa_atual_fim(l);
 
-	return remove_item_atual(pos_lin, pos_col, l);
-}
-/* Se o elemento chave existir na lista, o retorna em *item.
-  Retorna 1 se a operação foi bem sucedida e zero caso contrário
-  (elemento não encontrado também retorna zero). */
-int remove_item_lista(int *pos_lin, int *pos_col, t_lista *l){
-	if (lista_vazia(l))
-		return 0;
-
-	l->fim->pos_lin = *pos_lin;
-	l->fim->pos_col = *pos_col;
-	inicializa_atual_inicio(l);
-	while(l->atual->pos_lin != *pos_lin || l->atual->pos_col != *pos_col)
-		incrementa_atual(l);
-
-	if (l->atual == l->fim)
-		return 0;
-
-	return remove_item_atual(pos_lin, pos_col, l);
+	return remove_item_atual(l);
 }
 /* Inicializa o ponteiro atual para o primeiro elemento da lista.
   Retorna 1 se a operação foi bem sucedida e zero caso contrário. */
@@ -173,7 +155,7 @@ int inicializa_atual_fim(t_lista *l){
   tem próximo, retorna NULL.
 */
 void incrementa_atual(t_lista *l){
-	if (l->atual->prox != NULL)
+	if (l->atual->prox != l->fim)
 		l->atual = (l->atual)->prox;
 	else
 		l->atual = NULL;
@@ -182,7 +164,7 @@ void incrementa_atual(t_lista *l){
   este ponteiro. Se atual estiver apontando para o primeiro, isto é, não 
   tem anterior, retorna NULL. */
 void decrementa_atual(t_lista *l){
-	if (l->atual->prev != NULL)
+	if (l->atual->prev != l->ini)
 		l->atual = (l->atual)->prev;
 	else
 		l->atual = NULL;
@@ -191,7 +173,7 @@ void decrementa_atual(t_lista *l){
   Retorna em *item o valor contido na chave apontada pelo ponteiro atual. 
   Se atual não for válido a função retorna zero senão retorna 1. */
 int consulta_item_atual(int *pos_lin, int *pos_col, int *estado, int *tam_lin, int *tam_col, char *estilo, t_lista *l){
-	if (l->atual == l->fim || l->atual == l->ini)
+	if (l->atual == NULL)
 		return 0;
 
 	int i = 0;
@@ -211,14 +193,11 @@ int consulta_item_atual(int *pos_lin, int *pos_col, int *estado, int *tam_lin, i
 /* Remove o elemento apontado por atual da lista l e o retorna em *item.
   Faz o atual apontar para o sucessor do nodo removido.
   Retorna 1 se houve sucesso e zero caso contrário. */
-int remove_item_atual(int *pos_lin, int *pos_col, t_lista *l){
+int remove_item_atual(t_lista *l){
 	if (lista_vazia(l))
 		return 0;
 
 	t_nodo *temp;
-
-	*pos_lin = l->atual->pos_lin;
-	*pos_col = l->atual->pos_col;	
 
 	temp = l->atual->prox;
 	l->atual->prox->prev = l->atual->prev;
