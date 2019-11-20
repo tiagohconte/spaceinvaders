@@ -42,6 +42,7 @@ void destroi_lista(t_lista *l){
 	l->ini = NULL;
 	l->fim = NULL;
 	l->atual = NULL;
+	l = NULL;
 }
 /* Retorna o tamanho da lista em *tam.
   Retorna 1 se a operação foi bem sucedida e zero caso contrário. */
@@ -114,7 +115,7 @@ int insere_fim_lista(int pos_lin, int pos_col, int estado, int tam_lin, int tam_
 
 	return 1;
 }
-/* Remove o primeiro elemento da lista e o retorna em *item.
+/* Remove o primeiro elemento da lista.
   Retorna 1 se a operação foi bem sucedida e zero caso contrário. */
 int remove_inicio_lista(t_lista *l){
 	if (lista_vazia(l))
@@ -125,7 +126,7 @@ int remove_inicio_lista(t_lista *l){
 	return remove_item_atual(l);
 }
 /*
-  Remove o último elemento da lista e o retorna em *item.
+  Remove o último elemento da lista.
   Retorna 1 se a operação foi bem sucedida e zero caso contrário. */
 int remove_fim_lista(t_lista *l){
 	if (lista_vazia(l))
@@ -196,7 +197,7 @@ int consulta_item_atual(int *pos_lin, int *pos_col, int *estado, int *tam_lin, i
 
 	return 1;
 }
-/* Remove o elemento apontado por atual da lista l e o retorna em *item.
+/* Remove o elemento apontado por atual da lista l.
   Faz o atual apontar para o sucessor do nodo removido.
   Retorna 1 se houve sucesso e zero caso contrário. */
 int remove_item_atual(t_lista *l){

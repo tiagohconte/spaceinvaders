@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ncurses.h>
+#include <unistd.h>
 /*
 	ESTADOS
 
@@ -25,6 +26,7 @@ void inicia_ncurses(){
     init_pair(1, COLOR_WHITE, COLOR_BLACK);
     init_pair(2, COLOR_GREEN, COLOR_BLACK);
     init_pair(3, COLOR_RED, COLOR_BLACK);
+    init_pair(4, COLOR_YELLOW, COLOR_BLACK);
 }
 /* Finaliza o jogo */
 void finaliza_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lista *aliens, t_lista *tiros_aliens){
@@ -147,13 +149,17 @@ int inicia_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lis
 void imprime_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens){
 	clear();
 
+	wattron(stdscr, COLOR_PAIR(2));
 	imprime_lista(tiros_canhao);
 	imprime_lista(canhao);
 	imprime_lista(barreiras);
+	wattron(stdscr, COLOR_PAIR(1));
 	imprime_lista(aliens);
+	wattron(stdscr, COLOR_PAIR(4));
 	imprime_lista(tiros_aliens);
 
-	imprime_borda();
+	wattron(stdscr, COLOR_PAIR(1));
+	imprime_borda();	
 
 	refresh();
 }
@@ -215,7 +221,7 @@ void imprime_lista(t_lista *lista){
 /*verifica colisão de elementos*/
 void verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens){
 
-	t_nodo *alien, *barreira, *tiro;
+	t_nodo *alien, *barreira, *tiro, *can;
 
 	int atual_remov;		/*atual_remov indica se o nodo em atual foi removido*/
 
@@ -261,6 +267,19 @@ void verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras
 					barreira = barreiras->atual;
 				}
 			}
+			/*verifica colisão de aliens com canhao*/
+			if(! lista_vazia(canhao)){
+				inicializa_atual_inicio(canhao);
+				can = canhao->atual;
+				if(can->pos_lin <= alien->pos_lin+(alien->tam_lin-1))
+					if((can->pos_col + can->tam_col-1 >= alien->pos_col) && (can->pos_col <= (alien->pos_col + alien->tam_col-1))){
+						can->estado = 2;
+					}	
+			}
+			/*verifica colisão de aliens com o chao*/
+			if((alien->pos_lin) >= 33)
+				/*ADICIONAR FUNCAO PERDEU JOGO*/
+
 			incrementa_atual(aliens);
 			alien = aliens->atual;
 		}
@@ -271,6 +290,7 @@ void verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras
 		inicializa_atual_inicio(barreiras);
 		barreira = barreiras->atual;
 		while(barreira != NULL){
+			/*verifica colisão de tiros de canhao na barreira*/
 			if(! lista_vazia(tiros_canhao)){
 				inicializa_atual_inicio(tiros_canhao);
 				tiro = tiros_canhao->atual;		
@@ -289,6 +309,7 @@ void verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras
 					tiro = tiros_canhao->atual;
 				}
 			}
+			/*verifica colisão de tiros de aliens na barreira*/
 			if(! lista_vazia(tiros_aliens)){
 				inicializa_atual_inicio(tiros_aliens);
 				tiro = tiros_aliens->atual;		

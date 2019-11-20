@@ -26,7 +26,7 @@ int main() {
 	}
 	
 	dir_alien = 2;			/*Seta a direção inicial do alien*/
-	vel_alien = 12;			/*Seta a velocidade inicial do alien*/
+	vel_alien = 2;			/*Seta a velocidade inicial do alien*/
 	cont_alien = 0;			/*Contador de ciclos para controlar a velocidade do alien*/
 	cont_tiros_canhao = 0;	/*Contador de ciclos para controlar a velocidade dos tiros do canhao*/
 	cont_tiros_aliens = 0;	/*Contador de ciclos para controlar a velocidade dos tiros do alien*/
@@ -68,26 +68,29 @@ int main() {
 	    }	    
 
 	    verifica_colisao(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens);
-	    if(cont_tiros_canhao == 1){
+	    if(cont_tiros_canhao == 2){
 	    	move_tiros(&tiros_canhao, 3);
 	    	cont_tiros_canhao = 0;
 		}
 		if(cont_tiros_aliens == 4){
+			tamanho_lista(&tam_lista, &tiros_aliens);
+			if(tam_lista < 3){
+				tamanho_lista(&tam_lista, &aliens);
+				aleat = rand() % tam_lista;
+				alien_atira(&tiros_aliens, &aliens, aleat);
+			}
 	    	move_tiros(&tiros_aliens, 4);
 	    	cont_tiros_aliens = 0;
 		}
 
 		if(cont_alien == vel_alien){
-	    	move_aliens(&aliens, &dir_alien, &vel_alien);
+	    	move_aliens(&aliens, &dir_alien, &vel_alien);	    		
 	    	cont_alien = 0;
 	    }
 
-	    tamanho_lista(&tam_lista, &tiros_aliens);
-	    if(tam_lista < 3){
-	    	tamanho_lista(&tam_lista, &aliens);
-	    	aleat = rand() % tam_lista;
-	    	alien_atira(&tiros_aliens, &aliens, aleat);
-	    }
+	    if(lista_vazia(&canhao))
+	    	sleep(10);
+	    	/*finaliza_jogo(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens);*/
 
 	    cont_alien++;
 	    cont_tiros_canhao++;
