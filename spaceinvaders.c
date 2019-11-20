@@ -26,7 +26,7 @@ int main() {
 	}
 	
 	dir_alien = 2;			/*Seta a direção inicial do alien*/
-	vel_alien = 2;			/*Seta a velocidade inicial do alien*/
+	vel_alien = 12;			/*Seta a velocidade inicial do alien*/
 	cont_alien = 0;			/*Contador de ciclos para controlar a velocidade do alien*/
 	cont_tiros_canhao = 0;	/*Contador de ciclos para controlar a velocidade dos tiros do canhao*/
 	cont_tiros_aliens = 0;	/*Contador de ciclos para controlar a velocidade dos tiros do alien*/

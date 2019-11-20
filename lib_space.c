@@ -277,7 +277,7 @@ void verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras
 					}	
 			}
 			/*verifica colisão de aliens com o chao*/
-			if((alien->pos_lin) >= 33)
+			/*if((alien->pos_lin) >= 33)*/
 				/*ADICIONAR FUNCAO PERDEU JOGO*/
 
 			incrementa_atual(aliens);
