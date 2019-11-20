@@ -63,4 +63,7 @@ void muda_estilo(char *estilo, char novo[]);
 int move_elemento(t_lista *l, int direcao);
 
 /*função para o canhao atirar*/
-void canhao_atira(t_lista *tiros_canhao, t_lista *canhao);
+void canhao_atira(t_lista *tiros, t_lista *canhao);
+
+/*função para o alien atirar*/
+void alien_atira(t_lista *tiros, t_lista *aliens, int num_alien);

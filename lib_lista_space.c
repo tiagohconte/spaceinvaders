@@ -46,8 +46,10 @@ void destroi_lista(t_lista *l){
 /* Retorna o tamanho da lista em *tam.
   Retorna 1 se a operação foi bem sucedida e zero caso contrário. */
 int tamanho_lista(int *tam, t_lista *l){
-	if (lista_vazia(l))
+	if (lista_vazia(l)){
+		*tam = 0;
 		return 0;
+	}
 
 	*tam = l->tamanho;
 	return 1;
