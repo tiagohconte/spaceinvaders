@@ -136,8 +136,10 @@ int remove_fim_lista(t_lista *l){
 /* Inicializa o ponteiro atual para o primeiro elemento da lista.
   Retorna 1 se a operação foi bem sucedida e zero caso contrário. */
 int inicializa_atual_inicio(t_lista *l){
-	if (lista_vazia(l))
+	if (lista_vazia(l)){
+		l->atual = NULL;
 		return 0;
+	}
 	l->atual = l->ini->prox;
 	return 1;
 }
@@ -145,8 +147,10 @@ int inicializa_atual_inicio(t_lista *l){
   Retorna 1 se a operação foi bem sucedida e zero caso contrário.
 */
 int inicializa_atual_fim(t_lista *l){
-	if (lista_vazia(l))
+	if (lista_vazia(l)){
+		l->atual = NULL;
 		return 0;
+	}
 	l->atual = l->fim->prev;
 	return 1;
 }
@@ -173,7 +177,7 @@ void decrementa_atual(t_lista *l){
   Retorna em *item o valor contido na chave apontada pelo ponteiro atual. 
   Se atual não for válido a função retorna zero senão retorna 1. */
 int consulta_item_atual(int *pos_lin, int *pos_col, int *estado, int *tam_lin, int *tam_col, char *estilo, t_lista *l){
-	if (l->atual == NULL)
+	if (l->atual == NULL || l->atual == l->ini || l->atual == l->fim)
 		return 0;
 
 	int i = 0;

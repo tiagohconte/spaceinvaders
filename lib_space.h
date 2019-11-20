@@ -6,7 +6,6 @@
 
 #include <stdio.h>
 #include <ncurses.h>
-#include <unistd.h>
 #include "lib_lista_space.h"
 
 /*definindo os modelos de aliens*/
@@ -32,22 +31,22 @@
 void inicia_ncurses();
 
 /*Inicializa o jogo*/
-int inicia_jogo(t_lista *tiros, t_lista *canhao, t_lista *barreiras, t_lista *aliens);
+int inicia_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens);
 
 /* Finaliza o jogo */
-void finaliza_jogo(t_lista *tiros, t_lista *canhao, t_lista *barreira, t_lista *aliens);
+void finaliza_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lista *aliens, t_lista *tiros_aliens);
 
 /*verifica colisão de elementos*/
-void verifica_colisao(t_lista *tiros, t_lista *canhao, t_lista *barreiras, t_lista *aliens);
+void verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens);
 
 /*movimenta os tiros*/
-void move_tiros(t_lista *tiros);
+void move_tiros(t_lista *tiros, int direcao);
 
 /*movimenta os aliens*/
 void move_aliens(t_lista *aliens, int *direcao, int *vel_alien);
 
 /*Comanda as operações para impressão do jogo*/
-void imprime_jogo(t_lista *tiros, t_lista *canhao, t_lista *barreiras, t_lista *aliens);
+void imprime_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens);
 
 /*imprime a borda do jogo*/
 void imprime_borda();
@@ -64,4 +63,4 @@ void muda_estilo(char *estilo, char novo[]);
 int move_elemento(t_lista *l, int direcao);
 
 /*função para o canhao atirar*/
-void canhao_atira(t_lista *tiros, t_lista *canhao);
+void canhao_atira(t_lista *tiros_canhao, t_lista *canhao);
