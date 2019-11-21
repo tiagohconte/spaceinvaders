@@ -1,7 +1,7 @@
 /*
   Biblioteca para a implementação do jogo Space Invaders
-  Feita por Tiago Conte
-  10 de novembro de 2019
+  Feita por Tiago Henrique Conte
+  Concluído em  de novembro de 2019
 */
 
 #include <string.h>

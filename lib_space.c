@@ -24,6 +24,7 @@ void inicia_ncurses(){
     init_pair(2, COLOR_GREEN, COLOR_BLACK);
     init_pair(3, COLOR_RED, COLOR_BLACK);
     init_pair(4, COLOR_YELLOW, COLOR_BLACK);
+    init_pair(5, COLOR_CYAN, COLOR_BLACK);
 }
 /* Realiza as operacoes necessarias para o início do jogo*/
 int inicia_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lista *aliens, t_lista *tiros_aliens, int *dir, int *vel, int *cont){
@@ -155,13 +156,12 @@ void destroi_todas_listas(t_lista *tiros_canhao, t_lista *canhao, t_lista *barre
 }
 /* Realiza a impressao da tela de jogo*/
 void imprime_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens, int pontos){
-	char ch[6];
-	int x;
 
 	clear();
+	wattron(stdscr, A_BOLD);
 	/* Imprime canhao e seus tiros */
 	wattron(stdscr, COLOR_PAIR(2));
-	imprime_lista(tiros_canhao);
+	imprime_lista(tiros_canhao);	
 	imprime_lista(canhao);
 	/* Imprime barreiras */
 	imprime_lista(barreiras);
@@ -171,9 +171,11 @@ void imprime_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_
 	wattron(stdscr, COLOR_PAIR(4));
 	imprime_lista(tiros_aliens);
 	/* Imprime borda */
+	wattroff(stdscr, A_BOLD);
 	wattron(stdscr, COLOR_PAIR(1));
 	imprime_borda();
-	/* Imprime pontos */	
+	/* Imprime pontos */
+	wattron(stdscr, COLOR_PAIR(5));
 	move(1, 47);
 	printw("%.6d", pontos);
 
@@ -261,7 +263,7 @@ int verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras,
 								return 0;
 							else
 								atual_remov = 1;
-							(*pontos)++;
+							(*pontos)+=2;
 						}
 					if(!atual_remov)
 						incrementa_atual(tiros_canhao);

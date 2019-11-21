@@ -1,6 +1,6 @@
   /*
   Biblioteca para a implementação do jogo Space Invaders
-  Feita por Tiago Conte
+  Feita por Tiago Henrique Conte
   10 de novembro de 2019
 */
 

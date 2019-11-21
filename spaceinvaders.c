@@ -1,26 +1,36 @@
+/*	Implementação do jogo space invaders em C
+	Apenas para fins educacionais
+	Feito por Tiago Henrique Conte
+	Concluído em  de novembro de 2019
+*/
+
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
 #include "lib_space.h"
 
 /* Mostra mensagem de game over */
-void perdeu_jogo(){
+void perdeu_jogo(int pontos){
 	clear();
 	wattron(stdscr, COLOR_PAIR(1));
 	move(16, 45);
-	addstr("GAME OVER");
+	printw("GAME OVER");
 	move(17, 36);
-	addstr("space para tentar novamente");
+	printw("space para tentar novamente");
+	move(25, 45);
+	printw("Pontos: %d", pontos);
 	refresh();
 }
 /* Prepara o jogo para uma nova rodada */
-void ganhou_rodada(){
+void ganhou_rodada(pontos){
 	clear();
 	wattron(stdscr, COLOR_PAIR(1));
 	move(16, 42);
-	addstr("GANHOU A RODADA");
+	printw("GANHOU A RODADA");
 	move(17, 40);
-	addstr("space para continuar");
+	printw("space para continuar");
+	move(25, 45);
+	printw("Pontos: %d", pontos);
 	refresh();	
 }
 
@@ -103,8 +113,13 @@ int main() {
 	        }
 
 	        cont++;
-	    } else if(acabou == 1){
-	    	ganhou_rodada();
+	    } else {
+	    	if(acabou == 1){
+	    		ganhou_rodada(pontos);
+	    	} else if(acabou == 2){
+	    		perdeu_jogo(pontos);
+	    		pontos = 0;
+	    	}
 	    	key = getch();
 	    	while(key != 'q' && key != ' '){
 	    		key = getch();
@@ -119,24 +134,7 @@ int main() {
 	    			exit(0);
 	    		}	
 	    	}
-	    } else if(acabou == 2){
-	    	perdeu_jogo();
-	    	key = getch();
-	    	while(key != 'q' && key != ' '){
-	    		key = getch();
-	    	}
-	    	if(key == 'q'){
-	    		finaliza_jogo(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens, pontos);
-	    	} else {
-	    		pontos = 0;
-	    		destroi_todas_listas(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens);
-	    		if (! inicia_jogo(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens, &dir_alien, &vel_alien, &cont)){
-	    			endwin();
-	    			printf("Erro na inicialização!\n");
-	    			exit(0);
-	    		}
-	    	}
-	    }  
+	    }
 
 	    usleep(36000);
     }
