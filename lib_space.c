@@ -1,8 +1,5 @@
 #include "lib_space.h"
-#include <stdio.h>
-#include <string.h>
-#include <ncurses.h>
-#include <unistd.h>
+
 /*
 	ESTADOS
 
@@ -28,19 +25,8 @@ void inicia_ncurses(){
     init_pair(3, COLOR_RED, COLOR_BLACK);
     init_pair(4, COLOR_YELLOW, COLOR_BLACK);
 }
-/* Finaliza o jogo */
-void finaliza_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lista *aliens, t_lista *tiros_aliens){
-	/*Destruindo listas*/
-	destroi_lista(tiros_canhao);
-	destroi_lista(canhao);
-	destroi_lista(barreira);
-	destroi_lista(aliens);
-	destroi_lista(tiros_aliens);
-
-	endwin();
-    exit(0);
-}
-int inicia_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lista *aliens, t_lista *tiros_aliens){
+/* Realiza as operacoes necessarias para o início do jogo*/
+int inicia_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lista *aliens, t_lista *tiros_aliens, int *dir, int *vel, int *cont){
 	/*Inicializando as listas*/
 	if (! inicializa_lista(tiros_canhao))
 		return 0;
@@ -52,6 +38,10 @@ int inicia_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lis
 		return 0;
 	if (! inicializa_lista(tiros_aliens))
 		return 0;
+
+	*dir = 2;				/*Seta a direção inicial do alien*/
+	*vel = 12;				/*Seta a velocidade inicial do alien*/
+	*cont = 0;				/*Contador de ciclos para controlar a velocidade do alien*/
 
 	/*Inserindo canhao na lista*/
 	if (! insere_fim_lista(34, 47, 1, 2, 5, CANHAO_STYLE, canhao)){
@@ -146,20 +136,46 @@ int inicia_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lis
 
 	return 1;
 }
-void imprime_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens){
-	clear();
+/* Finaliza o jogo */
+void finaliza_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lista *aliens, t_lista *tiros_aliens, int pontos){
+	/*Destruindo listas*/
+	destroi_todas_listas(tiros_canhao, canhao, barreira, aliens, tiros_aliens);
 
+	endwin();
+	printf("JOGO FINALIZADO!\nPontuação final: %d\n", pontos);
+    exit(0);
+}
+/* Destroi as listas*/
+void destroi_todas_listas(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lista *aliens, t_lista *tiros_aliens){
+	destroi_lista(tiros_canhao);
+	destroi_lista(canhao);
+	destroi_lista(barreira);
+	destroi_lista(aliens);
+	destroi_lista(tiros_aliens);
+}
+/* Realiza a impressao da tela de jogo*/
+void imprime_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens, int pontos){
+	char ch[6];
+	int x;
+
+	clear();
+	/* Imprime canhao e seus tiros */
 	wattron(stdscr, COLOR_PAIR(2));
 	imprime_lista(tiros_canhao);
 	imprime_lista(canhao);
+	/* Imprime barreiras */
 	imprime_lista(barreiras);
+	/* Imprime aliens e seus tiros */
 	wattron(stdscr, COLOR_PAIR(1));
 	imprime_lista(aliens);
 	wattron(stdscr, COLOR_PAIR(4));
 	imprime_lista(tiros_aliens);
-
+	/* Imprime borda */
 	wattron(stdscr, COLOR_PAIR(1));
-	imprime_borda();	
+	imprime_borda();
+	/* Imprime pontos */	
+	move(1, 47);
+	printw("%.6d", pontos);
 
 	refresh();
 }
@@ -179,8 +195,7 @@ void imprime_borda(){
 		addch('-');
 	}
 }
-
-/*Imprime a lista*/
+/*Imprime a lista na tela*/
 void imprime_lista(t_lista *lista){
 	if (lista_vazia(lista))
 		return;
@@ -218,19 +233,22 @@ void imprime_lista(t_lista *lista){
 	}
 
 }
-/*verifica colisão de elementos*/
-void verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens){
+/*verifica colisão de elementos
+retorna 1 se o jogador venceu a rodada e 2 se perdeu, se nenhum ocorre, retorna 0*/
+int verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens, int *pontos){
 
 	t_nodo *alien, *barreira, *tiro, *can;
 
 	int atual_remov;		/*atual_remov indica se o nodo em atual foi removido*/
 
 	/*verifica colisão de aliens*/
-	if(! lista_vazia(aliens)){
+	if(lista_vazia(aliens)){
+		return 1;
+	} else {
 		inicializa_atual_inicio(aliens);
 		alien = aliens->atual;
 		while(alien != NULL){
-			/*verifica colisão de tiros_canhao em aliens*/
+			/*verifica colisão de tiros de canhao em aliens*/
 			if(! lista_vazia(tiros_canhao)){
 				inicializa_atual_inicio(tiros_canhao);
 				tiro = tiros_canhao->atual;		
@@ -240,9 +258,10 @@ void verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras
 						if((tiro->pos_col >= alien->pos_col) && (tiro->pos_col <= (alien->pos_col + alien->tam_col-1))){
 							alien->estado = 2;
 							if (! remove_item_atual(tiros_canhao))
-								return;
+								return 0;
 							else
 								atual_remov = 1;
+							(*pontos)++;
 						}
 					if(!atual_remov)
 						incrementa_atual(tiros_canhao);
@@ -258,7 +277,7 @@ void verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras
 					if((barreira->pos_lin >= alien->pos_lin) && (barreira->pos_lin <= (alien->pos_lin + alien->tam_lin-1)))
 						if((barreira->pos_col >= alien->pos_col) && (barreira->pos_col <= (alien->pos_col + alien->tam_col-1))){
 							if (! remove_item_atual(barreiras))
-								return;
+								return 0;
 							else
 								atual_remov = 1;
 						}
@@ -276,9 +295,10 @@ void verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras
 						can->estado = 2;
 					}	
 			}
-			/*verifica colisão de aliens com o chao*/
-			/*if((alien->pos_lin) >= 33)*/
-				/*ADICIONAR FUNCAO PERDEU JOGO*/
+			/*verifica colisão do alien com o chao*/
+			if((alien->pos_lin) >= 33){
+				return 2;
+			}
 
 			incrementa_atual(aliens);
 			alien = aliens->atual;
@@ -300,7 +320,7 @@ void verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras
 						if((tiro->pos_col >= barreira->pos_col) && (tiro->pos_col <= (barreira->pos_col + barreira->tam_col-1))){
 							barreira->estado = 2;
 							if (! remove_item_atual(tiros_canhao))
-								return;
+								return 0;
 							else
 								atual_remov = 1;
 						}
@@ -319,7 +339,7 @@ void verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras
 						if((tiro->pos_col >= barreira->pos_col) && (tiro->pos_col <= (barreira->pos_col + barreira->tam_col-1))){
 							barreira->estado = 2;
 							if (! remove_item_atual(tiros_aliens))
-								return;
+								return 0;
 							else
 								atual_remov = 1;
 						}
@@ -333,8 +353,10 @@ void verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras
 		}
 	}
 
-	/*verifica colisão de tiros na barreira*/
-	if(! lista_vazia(canhao)){
+	/*verifica colisão de tiros de aliens no canhao*/
+	if(lista_vazia(canhao)){
+		return 2;
+	} else {
 		inicializa_atual_inicio(canhao);		
 		if(! lista_vazia(tiros_aliens)){
 			inicializa_atual_inicio(tiros_aliens);
@@ -345,7 +367,7 @@ void verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras
 					if((tiro->pos_col >= canhao->atual->pos_col) && (tiro->pos_col <= (canhao->atual->pos_col + canhao->atual->tam_col-1))){
 						canhao->atual->estado = 2;
 						if (! remove_item_atual(tiros_aliens))
-							return;
+							return 0;
 						else
 							atual_remov = 1;
 					}
@@ -355,6 +377,8 @@ void verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras
 			}			
 		}
 	}
+
+	return 0;
 
 }
 /*movimenta os tiros*/

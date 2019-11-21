@@ -4,6 +4,7 @@
   10 de novembro de 2019
 */
 
+#include <string.h>
 #include <stdio.h>
 #include <ncurses.h>
 #include "lib_lista_space.h"
@@ -31,13 +32,16 @@
 void inicia_ncurses();
 
 /*Inicializa o jogo*/
-int inicia_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens);
+int inicia_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lista *aliens, t_lista *tiros_aliens, int *dir, int *vel, int *cont);
 
 /* Finaliza o jogo */
-void finaliza_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lista *aliens, t_lista *tiros_aliens);
+void finaliza_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lista *aliens, t_lista *tiros_aliens, int pontos);
+
+/* Destroi as listas*/
+void destroi_todas_listas(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lista *aliens, t_lista *tiros_aliens);
 
 /*verifica colisão de elementos*/
-void verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens);
+int verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens, int *pontos);
 
 /*movimenta os tiros*/
 void move_tiros(t_lista *tiros, int direcao);
@@ -46,7 +50,7 @@ void move_tiros(t_lista *tiros, int direcao);
 void move_aliens(t_lista *aliens, int *direcao, int *vel_alien);
 
 /*Comanda as operações para impressão do jogo*/
-void imprime_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens);
+void imprime_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens, int pontos);
 
 /*imprime a borda do jogo*/
 void imprime_borda();
