@@ -13,8 +13,10 @@
 void perdeu_jogo(int pontos){
 	clear();
 	wattron(stdscr, COLOR_PAIR(1));
+	wattron(stdscr, A_BOLD);
 	move(16, 45);
 	printw("GAME OVER");
+	wattroff(stdscr, A_BOLD);
 	move(17, 36);
 	printw("space para tentar novamente");
 	move(25, 45);
@@ -25,8 +27,10 @@ void perdeu_jogo(int pontos){
 void ganhou_rodada(pontos){
 	clear();
 	wattron(stdscr, COLOR_PAIR(1));
+	wattron(stdscr, A_BOLD);
 	move(16, 42);
 	printw("GANHOU A RODADA");
+	wattroff(stdscr, A_BOLD);
 	move(17, 40);
 	printw("space para continuar");
 	move(25, 45);

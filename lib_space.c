@@ -176,8 +176,8 @@ void imprime_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_
 	imprime_borda();
 	/* Imprime pontos */
 	wattron(stdscr, COLOR_PAIR(5));
-	move(1, 47);
-	printw("%.6d", pontos);
+	move(1, 1);
+	printw("score: %d", pontos);
 
 	refresh();
 }
