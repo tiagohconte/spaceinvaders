@@ -40,7 +40,7 @@ void ganhou_rodada(pontos){
 
 int main() {
 	/* Configuracoes do jogo*/
-	t_lista tiros_canhao, canhao, barreiras, aliens, tiros_aliens;
+	t_lista tiros_canhao, canhao, barreiras, aliens, tiros_aliens, nave_mae;
 
     int nlin, ncol, cont, vel_alien, dir_alien, tam_lista, aleat, acabou, pontos;
     chtype key;
@@ -54,7 +54,7 @@ int main() {
     		printf("O terminal deve ter tamanho mínimo de %d linhas por %d colunas\n", TAM_LIN, TAM_COL);
     		exit(0);
     	} 
-	if (! inicia_jogo(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens, &dir_alien, &vel_alien, &cont)){
+	if (! inicia_jogo(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens, &nave_mae, &dir_alien, &vel_alien, &cont)){
 		endwin();
 		printf("Erro na inicialização!\n");
 		exit(0);
@@ -70,7 +70,7 @@ int main() {
     		exit(0);
     	} 
 
-    	imprime_jogo(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens, pontos);
+    	imprime_jogo(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens, &nave_mae, pontos);
 
 	    key = getch();
 
@@ -90,20 +90,26 @@ int main() {
 	    }
 		else if (key == 'q') {
 			/*sai do jogo*/
-	   		finaliza_jogo(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens, pontos);
+	   		finaliza_jogo(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens, &nave_mae, pontos);
 	    }
 	    else if (key == 'p') {
 			/*pausa o jogo por 10 segundos*/
 	   		sleep(10);
 	    }	    
 
-	    acabou = verifica_colisao(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens, &pontos);
+	    acabou = verifica_colisao(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens, &nave_mae, &pontos);
 	    if(acabou == 0){
+	    	/* Movimenta os tiros na tela a cada 2 ciclos */
 	        if(cont % 2 == 0){
 	        	move_tiros(&tiros_canhao, 3);
+	        	if(!lista_vazia(&nave_mae)){
+	        		move_nave_mae(&nave_mae);
+	        	}
 	    	}
+	    	/* Movimenta os tiros de aliens e gera novos tiros a cada 4 ciclos */
 	    	if(cont % 4 == 0){
 	    		tamanho_lista(&tam_lista, &tiros_aliens);
+	    		/* Caso haja menos de 3 tiros de aliens na tela será criado mais um vindo de um alien aleatorio */
 	    		if(tam_lista < 3){
 	    			tamanho_lista(&tam_lista, &aliens);
 	    			aleat = rand() % tam_lista;
@@ -111,10 +117,16 @@ int main() {
 	    		}
 	        	move_tiros(&tiros_aliens, 4);
 	    	}
-
+	    	/* Movimenta os aliens na tela a cada vel_alien ciclos */
 	    	if(cont % vel_alien == 0){
 	        	move_aliens(&aliens, &dir_alien, &vel_alien);
 	        }
+
+	        /* Gera e movimenta uma nave mae */
+	        if(((cont+1) % 500 == 0) && lista_vazia(&nave_mae)){
+				if(!gera_nave_mae(&nave_mae))
+			    	return 0;
+        	}
 
 	        cont++;
 	    } else {
@@ -129,10 +141,10 @@ int main() {
 	    		key = getch();
 	    	}
 	    	if(key == 'q'){
-	    		finaliza_jogo(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens, pontos);
+	    		finaliza_jogo(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens, &nave_mae, pontos);
 	    	} else {
-	    		destroi_todas_listas(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens);
-	    		if (! inicia_jogo(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens, &dir_alien, &vel_alien, &cont)){
+	    		destroi_todas_listas(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens, &nave_mae);
+	    		if (! inicia_jogo(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens, &nave_mae, &dir_alien, &vel_alien, &cont)){
 	    			endwin();
 	    			printf("Erro na inicialização!\n");
 	    			exit(0);
@@ -143,5 +155,5 @@ int main() {
 	    usleep(36000);
     }
 
-   finaliza_jogo(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens, pontos);
+   finaliza_jogo(&tiros_canhao, &canhao, &barreiras, &aliens, &tiros_aliens, &nave_mae, pontos);
 }

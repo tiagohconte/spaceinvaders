@@ -5,7 +5,7 @@
 */
 
 #include <stdlib.h>
-#define MAX 25
+#define MAX 27
 
 struct t_nodo {
     int pos_lin;

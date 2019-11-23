@@ -17,6 +17,8 @@
 #define ALIEN_3_A " nmn dbMdb_/-\\_\0"
 #define ALIEN_3_B " nmn dbMdb <^> \0"
 #define ALIEN_SHOT "&\0"
+#define NAVE_MAE_A " /MMMMM\\ AMoMoMoMA \\/'-'\\/ "
+#define NAVE_MAE_B " /MMMMM\\ AoMoMoMoA \\/'-'\\/ "
 /*definindo o modelo para a barreira*/
 #define BARRIER_A "A\0"
 #define BARRIER_M "M\0"
@@ -32,16 +34,16 @@
 void inicia_ncurses();
 
 /*Inicializa o jogo*/
-int inicia_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lista *aliens, t_lista *tiros_aliens, int *dir, int *vel, int *cont);
+int inicia_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lista *aliens, t_lista *tiros_aliens, t_lista *nave_mae, int *dir, int *vel, int *cont);
 
 /* Finaliza o jogo */
-void finaliza_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lista *aliens, t_lista *tiros_aliens, int pontos);
+void finaliza_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lista *aliens, t_lista *tiros_aliens, t_lista *nave_mae, int pontos);
 
 /* Destroi as listas*/
-void destroi_todas_listas(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lista *aliens, t_lista *tiros_aliens);
+void destroi_todas_listas(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreira, t_lista *aliens, t_lista *tiros_aliens, t_lista *nave_mae);
 
 /*verifica colisão de elementos*/
-int verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens, int *pontos);
+int verifica_colisao(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens, t_lista *nave_mae, int *pontos);
 
 /*movimenta os tiros*/
 void move_tiros(t_lista *tiros, int direcao);
@@ -50,7 +52,7 @@ void move_tiros(t_lista *tiros, int direcao);
 void move_aliens(t_lista *aliens, int *direcao, int *vel_alien);
 
 /*Comanda as operações para impressão do jogo*/
-void imprime_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens, int pontos);
+void imprime_jogo(t_lista *tiros_canhao, t_lista *canhao, t_lista *barreiras, t_lista *aliens, t_lista *tiros_aliens, t_lista *nave_mae, int pontos);
 
 /*imprime a borda do jogo*/
 void imprime_borda();
@@ -71,3 +73,9 @@ void canhao_atira(t_lista *tiros, t_lista *canhao);
 
 /*função para o alien atirar*/
 void alien_atira(t_lista *tiros, t_lista *aliens, int num_alien);
+
+/*gera uma nave mae*/
+int gera_nave_mae(t_lista *nave_mae);
+
+/*move a nave mae*/
+void move_nave_mae(t_lista *nave_mae);
